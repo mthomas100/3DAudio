@@ -5,9 +5,12 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "@material/slider": "^7.0.0",
     "nice-color-palettes": "^3.0.0",
     "react": "16.13.1",
+    "react-compound-slider": "^2.5.0",
     "react-dom": "16.13.1",
+    "react-draggable": "^4.4.3",
     "react-scripts": "3.4.1",
     "react-spring": "^8.0.27",
     "react-three-fiber": "4.2.10",

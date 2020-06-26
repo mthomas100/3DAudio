@@ -1,0 +1,14 @@
+{
+  "name": "react-compound-slider",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://codesandbox.io/s/plzyr7lmj",
+  "main": "index.js",
+  "dependencies": {
+    "prop-types": "15.6.2",
+    "react": "16.7.0",
+    "react-compound-slider": "0.18.1",
+    "react-dom": "16.7.0"
+  }
+}
