@@ -21,46 +21,40 @@ function App() {
   function noteConvert() {
     switch (count % 7) {
       case 0:
-        console.log('A');
-        break;
+        return 'A';
       case 1:
-        console.log('B');
-        break;
+        return 'B';
       case 2:
-        console.log('C');
-        break;
+        return 'C';
       case 3:
-        console.log('D');
-        break;
+        return 'D';
       case 4:
-        console.log('E');
-        break;
+        return 'E';
       case 5:
-        console.log('F');
-        break;
+        return 'F';
       case 6:
-        console.log('G');
-        break;
+        return 'G';
       default:
         break;
     }
   }
 
   function handleCollide(e) {
-    noteConvert(count);
+
+    const L = () => noteConvert(count);
 
     if (count < 7) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C1`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}1`,'8n');
     } else if (count < 14) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C2`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}2`,'8n');
     } else if (count < 21) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C3`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}3`,'8n');
     } else if (count < 28) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C4`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}4`,'8n');
     } else if (count < 35) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C5`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}5`,'8n');
     } else {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`C6`,'8n');
+      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}6`,'8n');
     }
 
     count ++;
@@ -86,7 +80,7 @@ function App() {
         <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
         <Physics gravity={[0, -3, 0]}>
           <Plane onCollide={handleCollide} />
-          <Cube position={[0, 40, -2]} />
+          <Cube position={[0, 20, -2]} />
         </Physics>
       </Canvas>
     </Fragment>
