@@ -47,6 +47,12 @@ body {
   z-index: 2;
 }
 
+.wrapper {
+  background-color: white;
+  height: 400px;
+  width: 400px;
+}
+
 /* .right {
   float: right;
   width: 70vw;
