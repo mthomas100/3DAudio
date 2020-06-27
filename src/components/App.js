@@ -10,12 +10,9 @@ import '../styles.css'
 import Tone from 'tone'
 import Draggable from 'react-draggable'
 import Music from './Music/Music';
+import Camera from './Camera';
 
 function App() {
-  const [camX, setCamX] = useState('-1')
-  const [camY, setCamY] = useState('-1')
-  const [camZ, setCamZ] = useState('-1')
-
   let count = 0;
 
   function noteConvert() {
@@ -60,27 +57,46 @@ function App() {
     count ++;
     // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
   }
-  
-  function makeSound() {
-    
+
+  const [cam, setCam] = useState({
+    camX : -1,
+    camY: 2,
+    camZ: 5
+  });
+
+  function getCameraObject(cameraObject) {
+    setCam(cameraObject);
   }
-  
+   
 
   return (
     <Fragment>
-    <Draggable>
-    <div className="left">
-        <Music
-        />
-    </div>
-    </Draggable>
-      <Canvas className="right" shadowMap sRGB gl={{ alpha: false }} camera={{ position: [-1, 2, 5], fov: 50 }}>
+      <Draggable>
+        <div className="musicControls">
+          <Music />
+        </div>
+      </Draggable>
+
+      <Draggable>
+        <div className="cameraControls">
+          <Camera 
+          cameraObject={getCameraObject}/> {/* its called every time state updated, so stateful */}
+        </div>
+      </Draggable>
+
+      <Canvas 
+      className="right" 
+      shadowMap 
+      sRGB 
+      gl={{ alpha: false }} 
+      camera={{ position: [cam.camX, cam.camY, cam.camZ], 
+      fov: 50 }}>
         <color attach="background" args={['lightblue']} />
         <hemisphereLight intensity={0.35} />
         <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
-        <Physics gravity={[0, -3, 0]}>
+        <Physics gravity={[0, -9.8, -0.5]}>
           <Plane onCollide={handleCollide} />
-          <Cube position={[0, 20, -2]} />
+          <Sphere position={[0, 10, -5]} />
         </Physics>
       </Canvas>
     </Fragment>

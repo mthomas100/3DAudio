@@ -36,7 +36,7 @@ const Music = () => {
     }
   
     return (
-      <div id ="wrapper">
+      <div className ="wrapper">
         <h1>Note Configuration</h1>
             <MySlider
             note ={(e) => getNoteValue(e, 'noteVal')}
@@ -61,6 +61,7 @@ const Music = () => {
             <SourceList 
             getInstrument={getInstrument}
             />
+            
             
             <MusicButton 
             note = {note}

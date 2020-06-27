@@ -16,7 +16,7 @@ function MusicButton (props) {
         Note : {props.note}
         <br/>
         Octave: {props.octave}
-        <br/>
+        <br />
         Duration: {props.duration}
       </button>
     ); 
