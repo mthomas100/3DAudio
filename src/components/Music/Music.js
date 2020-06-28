@@ -4,7 +4,6 @@ import MusicButton from "./MusicButton";
 // import { Slider, Handle } from 'react-compound-slider';
 import MySlider from "./Slider/SliderComponents";
 import SourceList from "./SourceList";
-import './styles.css';
 
 const Music = () => {
     const [note, setNote ] = useState('');

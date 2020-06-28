@@ -11,8 +11,31 @@ import Tone from 'tone'
 import Draggable from 'react-draggable'
 import Music from './Music/Music';
 import Camera from './Camera';
+import { useSpring, a }  from "react-spring/three";
 
 function App() {
+  /*Hooks*/
+
+  const props = useSpring({
+  })
+
+  /*Camera State & Handler */
+  const [cameraObject, setCameraObject] = useState({
+    camX: -1,
+    camY: 2,
+    camZ: 5
+  })
+
+  function handleCameraChange (event, n) {
+    const { value, name } = event.target;
+    setCameraObject((prevValue) => (
+        {...cameraObject, [name] : prevValue[name] + n}
+    ))
+    event.preventDefault();
+}
+
+
+
   let count = 0;
 
   function noteConvert() {
@@ -58,50 +81,53 @@ function App() {
     // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
   }
 
-  const [cam, setCam] = useState({
-    camX : -1,
-    camY: 2,
-    camZ: 5
-  });
 
-  function getCameraObject(cameraObject) {
-    setCam(cameraObject);
-  }
-
-  const CameraDolly = () =>
+  const CameraDolly = () => {
+  return(
   useFrame(state => {
-    state.camera.position.x = cam.camX
-    state.camera.position.y = cam.camY
-    state.camera.position.z = cam.camZ
+    state.camera.position.x = cameraObject.camX
+    state.camera.position.y = cameraObject.camY
+    state.camera.position.z = cameraObject.camZ
     state.camera.fov = 50
     // state.camera.lookAt(5, 0, 0)
     state.camera.updateProjectionMatrix()
   })
+  )
+}
+
+
    
 
   return (
     <Fragment>
       <Draggable>
-        <div className="musicControls">
+        <div className="controlPanel TL">
           <Music />
         </div>
       </Draggable>
 
       <Draggable>
-        <div className="cameraControls">
-          <Camera
-          cameraObject={getCameraObject}
-          />
+        <div className="controlPanel BL">
+          <Camera handleCameraChange={handleCameraChange}/>
+        </div>
+      </Draggable>
+
+      {/*To be component */}
+      <Draggable>
+        <div className="controlPanel TR">
+          <div className="wrapper">
+            <h1>Reset Button</h1>
+          </div>
         </div>
       </Draggable>
 
       <Canvas className="right" shadowMap sRGB gl={{ alpha: false }}>
         <color attach="background" args={['lightblue']} />
         <hemisphereLight intensity={0.35} />
-        <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
+        <spotLight position={[10, 10, 10]} angle={0.7} penumbra={1} intensity={2} castShadow />
         <Physics gravity={[0, -9.8, -0.5]}>
           <Plane onCollide={handleCollide} />
-          <Sphere position={[0, 10, -5]} />
+          <Cube position={[0, 10, -5]} />
         </Physics>
         <CameraDolly />
       </Canvas>
