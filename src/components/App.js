@@ -58,15 +58,15 @@ function App() {
     // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
   }
 
-  const [cam, setCam] = useState({
-    camX : -1,
-    camY: 2,
-    camZ: 5
-  });
+  // const [cam, setCam] = useState({
+  //   camX : -1,
+  //   camY: 2,
+  //   camZ: 5
+  // });
 
-  function getCameraObject(cameraObject) {
-    setCam(cameraObject);
-  }
+  // function getCameraObject(cameraObject) {
+  //   setCam(cameraObject);
+  // }
 
   const [cameraObject, setCameraObject] = useState({
     camX: -1,
@@ -117,9 +117,9 @@ function handleChange(event, n) {
 
   const CameraDolly = () =>
   useFrame(state => {
-    state.camera.position.x = -1
-    state.camera.position.y = 2
-    state.camera.position.z = 5
+    state.camera.position.x = cameraObject.camX
+    state.camera.position.y = cameraObject.camY
+    state.camera.position.z = cameraObject.camZ
     state.camera.fov = 50
     // state.camera.lookAt(5, 0, 0)
     state.camera.updateProjectionMatrix()
