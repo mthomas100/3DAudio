@@ -58,68 +58,21 @@ function App() {
     // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
   }
 
-  // const [cam, setCam] = useState({
-  //   camX : -1,
-  //   camY: 2,
-  //   camZ: 5
-  // });
-
-  // function getCameraObject(cameraObject) {
-  //   setCam(cameraObject);
-  // }
-
-  const [cameraObject, setCameraObject] = useState({
-    camX: -1,
+  const [cam, setCam] = useState({
+    camX : -1,
     camY: 2,
     camZ: 5
-  })
+  });
 
-function handleChange(event, n) {
-  const { value, name } = event.target
-  switch (name) {
-    case 'camX':
-      setCameraObject((prevValue) => ({
-        camX: prevValue.camX + n,
-        camY: prevValue.camY,
-        camZ: prevValue.camZ
-      }))
-      break
-
-    case 'camY':
-      setCameraObject((prevValue) => ({
-        camX: prevValue.camX,
-        camY: prevValue.camY + n,
-        camZ: prevValue.camZ
-      }))
-      break
-
-    case 'camZ':
-      setCameraObject((prevValue) => ({
-        camX: prevValue.camX,
-        camY: prevValue.camY,
-        camZ: prevValue.camZ + n
-      }))
-      break
-
-    default:
-      break
-  }
-  
-  console.log(cameraObject);
-
-  event.preventDefault();
-}
-
-  function ChangeCam() {
-    useFrame(({ camera }) => camera.updateProjectionMatrix(cameraObject.camX, cameraObject.camY, cameraObject.camZ))
-    return null
+  function getCameraObject(cameraObject) {
+    setCam(cameraObject);
   }
 
   const CameraDolly = () =>
   useFrame(state => {
-    state.camera.position.x = cameraObject.camX
-    state.camera.position.y = cameraObject.camY
-    state.camera.position.z = cameraObject.camZ
+    state.camera.position.x = cam.camX
+    state.camera.position.y = cam.camY
+    state.camera.position.z = cam.camZ
     state.camera.fov = 50
     // state.camera.lookAt(5, 0, 0)
     state.camera.updateProjectionMatrix()
@@ -135,28 +88,14 @@ function handleChange(event, n) {
       </Draggable>
 
       <Draggable>
-      <div className="cameraControls">
-      <div className ="wrapper">
-            <h1>Camera Configuration</h1>
-            <form>
-                <button name="camX" onClick={(e) => handleChange(e, -1)}> Decrement camX</button>
-                <button name="camX" onClick={(e) => handleChange(e, 1)}> Increment camX</button>
-                <button name="camY" onClick={(e) => handleChange(e, -1)}> Decrement camY</button>
-                <button name="camY" onClick={(e) => handleChange(e, 1)}> Increment camY</button>
-                <button name="camZ" onClick={(e) => handleChange(e, -1)}> Decrement camZ</button>
-                <button name="camZ" onClick={(e) => handleChange(e, 1)}> Increment camZ</button>
-                {/* <button onClick={consoleLog}> Console Log</button> */}
-            </form>
+        <div className="cameraControls">
+          <Camera
+          cameraObject={getCameraObject}
+          />
         </div>
-      </div>
       </Draggable>
 
-      <Canvas 
-      className="right" 
-      shadowMap 
-      sRGB 
-      gl={{ alpha: false }}
-      >
+      <Canvas className="right" shadowMap sRGB gl={{ alpha: false }}>
         <color attach="background" args={['lightblue']} />
         <hemisphereLight intensity={0.35} />
         <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
