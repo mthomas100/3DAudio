@@ -16,8 +16,9 @@ import { useSpring, a }  from "react-spring/three";
 function App() {
   /*Hooks*/
 
-  const props = useSpring({
-  })
+  // const props = useSpring({
+  //   scale: active ? [1.5, 1.5, 1.5] : [1, 1, 1]
+  // })
 
   /*Camera State & Handler */
   const [cameraObject, setCameraObject] = useState({
@@ -25,12 +26,39 @@ function App() {
     camY: 2,
     camZ: 5
   })
-
-  function handleCameraChange (event, n) {
+ 
+  const handleCameraChange = (event, n) => {
+    console.log(n);
     const { value, name } = event.target;
-    setCameraObject((prevValue) => (
-        {...cameraObject, [name] : prevValue[name] + n}
-    ))
+
+    let nFrac = n / 1000;
+
+    const myLoop = (nFrac) => {
+      setTimeout( () => {
+        setCameraObject((prevValue) => (
+          {...cameraObject, [name] : prevValue[name] + (0.01 * Math.sign(nFrac))}
+        ));
+
+        if (nFrac < 0) {
+          nFrac = nFrac - 0.01;
+        } else {
+          nFrac = nFrac + 0.01;
+        }
+
+        console.log('nFrac is' + nFrac);
+        if (nFrac < 1 && nFrac > -1) {
+          console.log(nFrac);
+          myLoop(nFrac);
+        }
+      }, 1)
+    }
+
+    if (nFrac < 1) {
+      myLoop(nFrac);
+    }
+
+    console.log(cameraObject);
+
     event.preventDefault();
 }
 
@@ -64,17 +92,17 @@ function App() {
     const L = () => noteConvert(count);
 
     if (count < 7) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}1`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}1`,'8n');
     } else if (count < 14) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}2`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}2`,'8n');
     } else if (count < 21) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}3`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}3`,'8n');
     } else if (count < 28) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}4`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}4`,'8n');
     } else if (count < 35) {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}5`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}5`,'8n');
     } else {
-      new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}6`,'8n');
+      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}6`,'8n');
     }
 
     count ++;
@@ -108,7 +136,7 @@ function App() {
 
       <Draggable>
         <div className="controlPanel BL">
-          <Camera handleCameraChange={handleCameraChange}/>
+          <Camera handleCameraChange={(e, n) => handleCameraChange(e, n)}/>
         </div>
       </Draggable>
 
