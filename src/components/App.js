@@ -154,12 +154,33 @@ function App() {
 }
 
 
-   
+  const [closedArray, setClosedArray ] = useState(['Camera','Music']);
+
+  const handleCloseWindow = (name) => {
+    setClosedArray(prevValue => 
+      prevValue.filter((e, i) => {
+        return e !== name
+      }));
+  }
+
+  const handleOpenWindow = (name) => {
+    setClosedArray(prevValue => 
+      [...prevValue, name]
+    )
+  }
 
   return (
     <Fragment>
+      <button 
+      style={{position : 'absolute', zIndex: "3", top: "0", left: "0"}}
+      onClick={() => console.log(closedArray)}>
+      CLOSEDARRAY</button>
           {/*<Music handleSoundChange={handleSoundChange}/>*/}
-          <Camera handleCameraChange={(e, n) => handleCameraChange(e, n)}/>
+          <Camera 
+          handleCameraChange={(e, n) => handleCameraChange(e, n)}
+          handleCloseWindow={handleCloseWindow}
+          handleOpenWindow={handleOpenWindow}
+          />
           <Shape />
 
       <div className="bottomBar"></div>

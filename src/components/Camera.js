@@ -113,7 +113,7 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
     )
 }
 
-const ClosedBox = ({maximize}) => {
+const ClosedBox = ({maximize, handleOpenWindow}) => {
 
     const minimizedX = 0;
 
@@ -144,19 +144,30 @@ const ClosedBox = ({maximize}) => {
         },
     });
 
+    // useEffect(() => {
+    //     handleOpenWindow();
+    //   }, []);
+
     return (<animated.div style={closedBoxStyle}>
-        <h2 onClick={maximize}>Camera</h2>
+        <h2 onClick={() => {maximize()}}>Camera</h2>
     </animated.div>)
 }
 
-export default function Camera({ handleCameraChange }) {
+export default function Camera({ handleCameraChange, handleCloseWindow, handleOpenWindow }) {
     
     const [isOpen, setIsOpen] = useState(false);
 
   return (isOpen === true) ? 
   <OpenBox 
   handleCameraChange={handleCameraChange}
-  minimize={() => setIsOpen(!isOpen)}/> : 
+  minimize={
+      () => {
+          setIsOpen(!isOpen);
+          handleCloseWindow('Camera');
+          }}/> : 
   <ClosedBox
-  maximize={() => setIsOpen(!isOpen)} />
+  maximize={() => {
+      setIsOpen(!isOpen);
+      handleOpenWindow('Camera');
+      }} />
 }
