@@ -27,46 +27,17 @@ body {
   color: black;
 }
 
-.controlPanel {
-  position: absolute;
-  width: auto;
-  height: auto;
-  background-color: black;
-  z-index: 2;
-}
-
-.TL {
-  top: 0;
-  left: 0;
-}
-
-.BL {
-  bottom: 0;
-  left: 0;
-}
-
-.TR {
-  top: 0;
-  right: 0;
-}
-
-.BR {
-  bottom: 0;
-  right: 0;
-}
-
-/* .right {
-  float: right;
-  width: 70vw;
-} */
-
-.wrapper {
-  background-color: white;
-  height: 400px;
-  width: 400px;
-}
-
 
 h1 {
   text-align: center;
 }
+
+/* .bottomBar {
+  height: 50px;
+  width: 100%;
+  background-color: blue;
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+} */

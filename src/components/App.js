@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import React, { useRef, useState, Fragment } from 'react'
+import React, { useRef, useState, Fragment, useEffect } from 'react'
 import { Canvas, useFrame } from 'react-three-fiber'
 import Box from './Box'
 import Sphere from './Sphere'
@@ -8,9 +8,9 @@ import Plane from '../components/Plane'
 import Cube from '../components/Cube'
 import '../styles.css'
 import Tone from 'tone'
-import Draggable from 'react-draggable'
 import Music from './Music/Music';
 import Camera from './Camera';
+import Shape from './Shape';
 import { useSpring, a }  from "react-spring/three";
 
 function App() {
@@ -62,7 +62,37 @@ function App() {
     event.preventDefault();
 }
 
+  /* Tone state and handler */
 
+
+  const [ sound, setSound ] = useState({
+    note : '', 
+    octave :'',
+    duration : '',
+    instrument : ''
+  })
+
+  
+
+  const handleSoundChange = (name, value) => {
+    console.log({name, value});
+    setSound((prevValue) => (
+      {...sound, [name] : value}
+    ));
+    console.log(sound);
+  }
+
+  const [soundState, setSoundState] = useState({});
+
+  const handleCollide = () => {
+    setSoundState(sound);
+
+  }
+
+
+// new Tone[tone.instrument]().toMaster().triggerAttackRelease(tone.octave + tone.note , tone.duration);
+  
+  
 
   let count = 0;
 
@@ -87,27 +117,27 @@ function App() {
     }
   }
 
-  function handleCollide(e) {
+  // function DEPhandleCollide(e) {
 
-    const L = () => noteConvert(count);
+  //   const L = () => noteConvert(count);
 
-    if (count < 7) {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}1`,'8n');
-    } else if (count < 14) {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}2`,'8n');
-    } else if (count < 21) {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}3`,'8n');
-    } else if (count < 28) {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}4`,'8n');
-    } else if (count < 35) {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}5`,'8n');
-    } else {
-      new Tone.MembraneSynth().toMaster().triggerAttackRelease(`${L()}6`,'8n');
-    }
+  //   if (count < 7) {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}1`,'8n');
+  //   } else if (count < 14) {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}2`,'8n');
+  //   } else if (count < 21) {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}3`,'8n');
+  //   } else if (count < 28) {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}4`,'8n');
+  //   } else if (count < 35) {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}5`,'8n');
+  //   } else {
+  //     new Tone.AMSynth().toMaster().triggerAttackRelease(`${L()}6`,'8n');
+  //   }
 
-    count ++;
-    // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
-  }
+  //   count ++;
+  //   // new Tone.AMSynth().toMaster().triggerAttackRelease('C4','8n');
+  // }
 
 
   const CameraDolly = () => {
@@ -116,7 +146,7 @@ function App() {
     state.camera.position.x = cameraObject.camX
     state.camera.position.y = cameraObject.camY
     state.camera.position.z = cameraObject.camZ
-    state.camera.fov = 50
+    state.camera.fov = 100
     // state.camera.lookAt(5, 0, 0)
     state.camera.updateProjectionMatrix()
   })
@@ -128,34 +158,22 @@ function App() {
 
   return (
     <Fragment>
-      <Draggable>
-        <div className="controlPanel TL">
-          <Music />
-        </div>
-      </Draggable>
-
-      <Draggable>
-        <div className="controlPanel BL">
+          {/*<Music handleSoundChange={handleSoundChange}/>*/}
           <Camera handleCameraChange={(e, n) => handleCameraChange(e, n)}/>
-        </div>
-      </Draggable>
+          <Shape />
 
-      {/*To be component */}
-      <Draggable>
-        <div className="controlPanel TR">
-          <div className="wrapper">
-            <h1>Reset Button</h1>
-          </div>
-        </div>
-      </Draggable>
-
+      <div className="bottomBar"></div>
+      {/* Canvas */}
       <Canvas className="right" shadowMap sRGB gl={{ alpha: false }}>
         <color attach="background" args={['lightblue']} />
         <hemisphereLight intensity={0.35} />
         <spotLight position={[10, 10, 10]} angle={0.7} penumbra={1} intensity={2} castShadow />
         <Physics gravity={[0, -9.8, -0.5]}>
-          <Plane onCollide={handleCollide} />
-          <Cube position={[0, 10, -5]} />
+          <Plane />
+          <Cube 
+          position={[0, 100, 0]}
+          onCollide={handleCollide}
+          />
         </Physics>
         <CameraDolly />
       </Canvas>
