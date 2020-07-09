@@ -3,7 +3,6 @@ import Draggable from 'react-draggable';
 import {useSpring, animated} from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg';
 import { Handle } from './Music/Slider/components';
-import extractCSS from "component-css-extractor";
 
 //Camera Controls
 //Window minimize/maximize system which puts minimized window at a task tray
@@ -24,7 +23,7 @@ let dragEnd = [];
 let dragDifference = [0, 0];
 
 //below to be replaced by state or some prop passing in or somethign to maintain taskbar order
-const trayIndex = 1; 
+const trayIndex = 0; 
 
 const dragEndHandler = () => {
     dragStart = dragArray[0];
@@ -56,7 +55,7 @@ const OpenBox = ({ minimize, closedIndex }) => {
             position: 'absolute',
             zIndex: '2',
             top: '96vh',
-            left: `calc(${closedIndex('Shape') * 200}px`,
+            left: `calc(${trayIndex * 200}px`,
             backgroundColor: 'white',
             height: '50px',
             width: '200px'
@@ -98,7 +97,7 @@ const ClosedBox = ({maximize, handleOpenWindow, closedIndex}) => {
             position: 'absolute',
             zIndex: '2',
             top: 'calc(96vh - 0px)', 
-            left: `calc(${closedIndex('Shape') * 200}px`, //MINIMIZES TO (calc by index....)
+            left: `calc(${trayIndex * 200}px`, //MINIMIZES TO (calc by index....)
             backgroundColor: 'white',
             height: '50px',
             width: '200px'

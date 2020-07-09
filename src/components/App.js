@@ -185,7 +185,11 @@ function App() {
       style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
       onClick={() => console.log(closedIndex('Music'))}>
       SHAPE INDEX</button>
-          {/*<Music handleSoundChange={handleSoundChange}/>*/}
+          <Music 
+          handleSoundChange={handleSoundChange}
+          handleCloseWindow={handleCloseWindow}
+          handleOpenWindow={handleOpenWindow}
+          />
           <Camera 
           handleCameraChange={(e, n) => handleCameraChange(e, n)}
           handleCloseWindow={handleCloseWindow}
