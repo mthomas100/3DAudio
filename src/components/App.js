@@ -28,7 +28,7 @@ function App() {
   })
  
   const handleCameraChange = (event, n) => {
-    console.log(n);
+    
     const { value, name } = event.target;
 
     let nFrac = n / 1000;
@@ -154,7 +154,7 @@ function App() {
 }
 
 
-  const [closedArray, setClosedArray ] = useState(['Camera','Music']);
+  const [closedArray, setClosedArray ] = useState(['Music', 'Shape']);
 
   const handleCloseWindow = (name) => {
     setClosedArray(prevValue => 
@@ -169,19 +169,34 @@ function App() {
     )
   }
 
+  const closedIndex = (indexName) => {
+    return closedArray.findIndex(e => {
+      return e === indexName
+    })
+  }
+
   return (
     <Fragment>
       <button 
-      style={{position : 'absolute', zIndex: "3", top: "0", left: "0"}}
+      style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
       onClick={() => console.log(closedArray)}>
       CLOSEDARRAY</button>
+      <button 
+      style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
+      onClick={() => console.log(closedIndex('Music'))}>
+      SHAPE INDEX</button>
           {/*<Music handleSoundChange={handleSoundChange}/>*/}
           <Camera 
           handleCameraChange={(e, n) => handleCameraChange(e, n)}
           handleCloseWindow={handleCloseWindow}
           handleOpenWindow={handleOpenWindow}
+          closedIndex={() => closedIndex()}
           />
-          <Shape />
+          <Shape
+          handleCloseWindow={handleCloseWindow}
+          handleOpenWindow={handleOpenWindow}
+          closedIndex={() => closedIndex()}
+          />
 
       <div className="bottomBar"></div>
       {/* Canvas */}
