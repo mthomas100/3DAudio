@@ -1,17 +1,26 @@
 import ReactDOM from 'react-dom'
 import React, { useRef, useState, Fragment, useEffect } from 'react'
 import { Canvas, useFrame } from 'react-three-fiber'
-import Box from './Box'
-import Sphere from './Sphere'
+import Box from './components/Box'
+import Sphere from './components/Sphere'
 import { Physics, usePlane, useBox } from 'use-cannon'
-import Plane from '../components/Plane'
-import Cube from '../components/Cube'
+import Plane from './components/Plane'
+import Cube from './components/Cube'
 import '../styles.css'
 import Tone from 'tone'
-import Music from './Music/Music';
-import Camera from './Camera';
-import Shape from './Shape';
+import Music from './components/Music/Music';
+import Camera from './components/Camera';
+import Shape from './components/Shape';
 import { useSpring, a }  from "react-spring/three";
+
+//redux
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+//import { loadUser } from './actions/auth';
+//import setAuthToken from './utils/setAuthToken';
+
+
 
 function App() {
   /*Hooks*/
@@ -175,7 +184,10 @@ function App() {
     })
   }
 
+  // connect something like this to redux and toggle
+
   return (
+  <Provider store={store}>
     <Fragment>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
@@ -183,19 +195,17 @@ function App() {
       CLOSEDARRAY</button>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
-      onClick={() => console.log(closedIndex('Music'))}>
+      onClick={() => console.log('N/A TAP INTO REDUX TO SEE STATE')}>
       SHAPE INDEX</button>
           {/*<Music handleSoundChange={handleSoundChange}/>*/}
           <Camera 
           handleCameraChange={(e, n) => handleCameraChange(e, n)}
           handleCloseWindow={handleCloseWindow}
           handleOpenWindow={handleOpenWindow}
-          closedIndex={() => closedIndex()}
           />
           <Shape
           handleCloseWindow={handleCloseWindow}
           handleOpenWindow={handleOpenWindow}
-          closedIndex={() => closedIndex()}
           />
 
       <div className="bottomBar"></div>
@@ -214,6 +224,7 @@ function App() {
         <CameraDolly />
       </Canvas>
     </Fragment>
+  </Provider>
   )
 }
 

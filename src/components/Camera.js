@@ -1,9 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { Fragment, useState, useRef, useEffect } from 'react'
 import Draggable from 'react-draggable';
 import {useSpring, animated} from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg';
 import { Handle } from './Music/Slider/components';
 import extractCSS from "component-css-extractor";
+
+//redux imported
+import { connect } from 'react-redux';
+//import { Link, Redirect } from 'react-router-dom';
+import { toggleMinimized } from '../../actions/alert';
+//import { register } from '../../actions/auth';
+import PropTypes from 'prop-types';
 
 //Camera Controls
 //Window minimize/maximize system which puts minimized window at a task tray
@@ -170,4 +177,17 @@ export default function Camera({ handleCameraChange, handleCloseWindow, handleOp
       setIsOpen(!isOpen);
       handleOpenWindow('Camera');
       }} />
-}
+};
+
+Register.propTypes = {
+  //setAlert: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  //isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  { /*register*/ }
+)(Camera);
