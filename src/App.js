@@ -6,10 +6,10 @@ import Sphere from './components/Sphere'
 import { Physics, usePlane, useBox } from 'use-cannon'
 import Plane from './components/Plane'
 import Cube from './components/Cube'
-import '../styles.css'
+import './styles.css'
 import Tone from 'tone'
 import Music from './components/Music/Music';
-import Camera from './components/Camera';
+import { Camera } from './components/Camera';
 import Shape from './components/Shape';
 import { useSpring, a }  from "react-spring/three";
 
@@ -186,46 +186,56 @@ function App() {
 
   // connect something like this to redux and toggle
 
+  // useEffect(() => {
+  //   store.dispatch(loadUser());
+  // }, []);
+
+  //above syntax to import store into here
+  //okay at bottom because nothing happens until logic 
+  //is loaded through UI effects that happen inside 
+  //the return block
   return (
   <Provider store={store}>
-    <Fragment>
-      <button 
-      style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
-      onClick={() => console.log(closedArray)}>
-      CLOSEDARRAY</button>
-      <button 
-      style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
-      onClick={() => console.log('N/A TAP INTO REDUX TO SEE STATE')}>
-      SHAPE INDEX</button>
-          {/*<Music handleSoundChange={handleSoundChange}/>*/}
-          <Camera 
-          handleCameraChange={(e, n) => handleCameraChange(e, n)}
-          handleCloseWindow={handleCloseWindow}
-          handleOpenWindow={handleOpenWindow}
-          />
-          <Shape
-          handleCloseWindow={handleCloseWindow}
-          handleOpenWindow={handleOpenWindow}
-          />
+    <Router>
+      <Fragment>
+        <button 
+        style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
+        onClick={() => console.log(closedArray)}>
+        CLOSEDARRAY</button>
+        <button 
+        style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
+        onClick={() => console.log('N/A TAP INTO REDUX TO SEE STATE')}>
+        SHAPE INDEX</button>
+            {/*<Music handleSoundChange={handleSoundChange}/>*/}
+            <Camera 
+            handleCameraChange={(e, n) => handleCameraChange(e, n)}
+            handleCloseWindow={handleCloseWindow}
+            handleOpenWindow={handleOpenWindow}
+            />
+            <Shape
+            handleCloseWindow={handleCloseWindow}
+            handleOpenWindow={handleOpenWindow}
+            />
 
-      <div className="bottomBar"></div>
-      {/* Canvas */}
-      <Canvas className="right" shadowMap sRGB gl={{ alpha: false }}>
-        <color attach="background" args={['lightblue']} />
-        <hemisphereLight intensity={0.35} />
-        <spotLight position={[10, 10, 10]} angle={0.7} penumbra={1} intensity={2} castShadow />
-        <Physics gravity={[0, -9.8, -0.5]}>
-          <Plane />
-          <Cube 
-          position={[0, 100, 0]}
-          onCollide={handleCollide}
-          />
-        </Physics>
-        <CameraDolly />
-      </Canvas>
-    </Fragment>
+        <div className="bottomBar"></div>
+        {/* Canvas */}
+        <Canvas className="right" shadowMap sRGB gl={{ alpha: false }}>
+          <color attach="background" args={['lightblue']} />
+          <hemisphereLight intensity={0.35} />
+          <spotLight position={[10, 10, 10]} angle={0.7} penumbra={1} intensity={2} castShadow />
+          <Physics gravity={[0, -9.8, -0.5]}>
+            <Plane />
+            <Cube 
+            position={[0, 100, 0]}
+            onCollide={handleCollide}
+            />
+          </Physics>
+          <CameraDolly />
+        </Canvas>
+      </Fragment>
+    </Router>
   </Provider>
   )
 }
 
-export default App
+export default App;

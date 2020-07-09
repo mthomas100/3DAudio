@@ -8,7 +8,7 @@ import extractCSS from "component-css-extractor";
 //redux imported
 import { connect } from 'react-redux';
 //import { Link, Redirect } from 'react-router-dom';
-import { toggleMinimized } from '../../actions/alert';
+import { toggleMinimized, untoggleMinimized } from '../actions/camera';
 //import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
@@ -114,6 +114,7 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
         <button onClick={() => console.log(dragEnd)}>Last Index</button>
         <button onClick={() => console.log(dragStart)}>First Index</button>
         <button onClick={() => console.log(dragDifference)}>Drag Difference</button>
+        <button onClick={() => toggleMinimized('Camera')}>cam to redux</button>
       {/* <button onClick={() => setIsToggled(!isToggled)}>Toggle Spring</button> */}
     </animated.div>
     </Draggable>
@@ -156,38 +157,52 @@ const ClosedBox = ({maximize, handleOpenWindow}) => {
     //   }, []);
 
     return (<animated.div style={closedBoxStyle}>
-        <h2 onClick={() => {maximize()}}>Camera</h2>
+        <h2 onClick={maximize}>Camera</h2>
     </animated.div>)
 }
 
-export default function Camera({ handleCameraChange, handleCloseWindow, handleOpenWindow }) {
+export function Camera({ handleCameraChange, handleCloseWindow, handleOpenWindow }) {
     
     const [isOpen, setIsOpen] = useState(false);
 
   return (isOpen === true) ? 
   <OpenBox 
   handleCameraChange={handleCameraChange}
-  minimize={
-      () => {
-          setIsOpen(!isOpen);
-          handleCloseWindow('Camera');
-          }}/> : 
+  minimize={() => {
+      setIsOpen(!isOpen);
+      handleCloseWindow('Camera');
+      toggleMinimized('Camera');
+      }}/> : 
   <ClosedBox
   maximize={() => {
       setIsOpen(!isOpen);
       handleOpenWindow('Camera');
+      untoggleMinimized('Camera');
       }} />
 };
 
-Register.propTypes = {
-  //setAlert: PropTypes.func.isRequired
+Camera.propTypes = {
+  toggleMinimized: PropTypes.func,
+  untoggleMinimized: PropTypes.func
 };
 
-const mapStateToProps = state => ({
-  //isAuthenticated: state.auth.isAuthenticated
-});
+// const mapStateToProps = state => ({
+//   // isAuthenticated: state.auth.isAuthenticated
+// });
+
+// export default connect(Camera);
+
+
+// export default connect(mapStateToProps)(Camera);
+
+
+// export default connect(
+//   mapStateToProps,
+//   { setAlert, register }
+// )(Register);
+
 
 export default connect(
-  mapStateToProps,
-  { /*register*/ }
+  null,
+  { toggleMinimized, untoggleMinimized }
 )(Camera);

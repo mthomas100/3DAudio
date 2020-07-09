@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-//import alert from './alert';
+import camera from './camera'
 
 export default combineReducers({
-    //simply put name of reducer ____ separated by commas
+    camera
 });
+
+//simply put name of reducer ____ separated by commas

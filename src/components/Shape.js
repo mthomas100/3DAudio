@@ -1,9 +1,16 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { Fragment, useState, useRef, useEffect } from 'react'
 import Draggable from 'react-draggable';
 import {useSpring, animated} from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg';
 import { Handle } from './Music/Slider/components';
 import extractCSS from "component-css-extractor";
+
+//redux imported
+import { connect } from 'react-redux';
+//import { Link, Redirect } from 'react-router-dom';
+import { toggleMinimized } from '../actions/camera.js';
+//import { register } from '../../actions/auth';
+import PropTypes from 'prop-types';
 
 //Camera Controls
 //Window minimize/maximize system which puts minimized window at a task tray
@@ -56,7 +63,7 @@ const OpenBox = ({ minimize, closedIndex }) => {
             position: 'absolute',
             zIndex: '2',
             top: '96vh',
-            left: `calc(${closedIndex('Shape') * 200}px`,
+            left: `calc(${trayIndex * 200}px`,
             backgroundColor: 'white',
             height: '50px',
             width: '200px'
@@ -98,7 +105,7 @@ const ClosedBox = ({maximize, handleOpenWindow, closedIndex}) => {
             position: 'absolute',
             zIndex: '2',
             top: 'calc(96vh - 0px)', 
-            left: `calc(${closedIndex('Shape') * 200}px`, //MINIMIZES TO (calc by index....)
+            left: `calc(${trayIndex * 200}px`, //MINIMIZES TO (calc by index....)
             backgroundColor: 'white',
             height: '50px',
             width: '200px'
