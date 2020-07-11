@@ -1,26 +1,38 @@
-const minimizedArray = ['Music', 'Shape'];
 
 export const generalStates = {
-  minimizedArray
+  minimizedArray : ['Shape', 'Camera', 'Music']
 }
 
 
 
 
-export const generalReducer = (state, action) => {
+export const generalReducer = (state = generalStates, action) => {
   const { type, payload } = action;
   switch (type) {
     case "minimizeWindow":
-      return (
-        [...state.minimizedArray, payload]
-      );
-    case "maximizeWindow":
-      return ([
-        ...state.filter(e => {
+      return {
+        minimizedArray : [...state.minimizedArray.filter(e => {
           return e !== payload
-        })
-      ]);
+        })]
+      }
+    case "maximizeWindow":
+      return {
+        minimizedArray : [...state.minimizedArray, payload]
+      };
     default:
       throw new Error("Unexpected action");
   }
 };
+
+
+
+// return (
+//   [...state.minimizedArray, payload]
+// );
+
+
+// return ([
+//   ...state.minimizedArray.filter(e => {
+//     return e !== payload
+//   })
+// ]);

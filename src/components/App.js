@@ -161,7 +161,7 @@ function App() {
     <Fragment>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
-      onClick={() => console.log(state.generalStates)}>
+      onClick={() => console.log(state.generalStates.minimizedArray)}>
       CLOSEDARRAY</button>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
