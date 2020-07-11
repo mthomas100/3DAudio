@@ -3,7 +3,6 @@ import Draggable from 'react-draggable';
 import {useSpring, animated} from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg';
 import { Handle } from './Music/Slider/components';
-import extractCSS from "component-css-extractor";
 
 //Camera Controls
 //Window minimize/maximize system which puts minimized window at a task tray

@@ -82,11 +82,11 @@ function App() {
     console.log(sound);
   }
 
-  const [soundState, setSoundState] = useState({});
+  // const [soundState, setSoundState] = useState({});
 
-  const handleCollide = () => {
-    setSoundState(sound);
-
+  const handleCollide = (mySound) => {
+    console.log(mySound);
+    new Tone[mySound.instrument]().toMaster().triggerAttackRelease(mySound.octave + mySound.note , mySound.duration);
   }
 
 
@@ -175,6 +175,14 @@ function App() {
     })
   }
 
+  const [minimizedArray, setMinimizedArray] = useState([]);
+
+  // const handleMinimize = componentName => {
+  //   setMinimizedArray(prevValue => {
+  //     prevValue.push(componentName)
+  //   })
+  // }
+
   return (
     <Fragment>
       <button 
@@ -211,8 +219,8 @@ function App() {
         <Physics gravity={[0, -9.8, -0.5]}>
           <Plane />
           <Cube 
-          position={[0, 100, 0]}
-          onCollide={handleCollide}
+          position={[0, 170, 0]}
+          onCollide={() => handleCollide(sound)}
           />
         </Physics>
         <CameraDolly />

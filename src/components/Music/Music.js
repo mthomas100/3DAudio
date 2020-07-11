@@ -51,7 +51,7 @@ const OpenBox = ({ handleSoundChange, minimize }) => {
         top: '0vh',
         left: '0px',
         backgroundColor: 'white',
-        height: '400px',
+        height: '500px',
         width: '400px'
       })
     },
@@ -103,6 +103,7 @@ const OpenBox = ({ handleSoundChange, minimize }) => {
           <HandleIcon style={handleStyle} />
         </myHandle>
         <h1>Note Configuration</h1>
+        <p>*must select all 4 options*</p>
         <MySlider note={(e) => getNoteValue(e, 'note')} domainMin={0} domainMax={6} tickArray={noteArray} />
         <MySlider note={(e) => getNoteValue(e, 'octave')} domainMin={0} domainMax={7} tickArray={octaveArray} />
         <MySlider note={(e) => getNoteValue(e, 'duration')} domainMin={0} domainMax={5} tickArray={durationArray} />
@@ -142,7 +143,7 @@ const ClosedBox = ({ maximize, handleOpenWindow }) => {
       top: `calc(0vh + ${dragDifference[1]}px)`,
       left: `${dragDifference[0]}px`,
       backgroundColor: 'white',
-      height: '400px',
+      height: '500px',
       width: '400px'
     }
   })
@@ -170,8 +171,9 @@ export default function Camera({ handleSoundChange, handleCloseWindow, handleOpe
     <OpenBox
       handleSoundChange={handleSoundChange}
       minimize={() => {
-        setIsOpen(!isOpen)
-        handleCloseWindow('Music')
+        setIsOpen(!isOpen);
+        handleCloseWindow('Music');
+        {/* onMinimize('Music'); */}
       }}
     />
   ) : (
