@@ -12,7 +12,7 @@ export const generalReducer = (state, action) => {
   switch (type) {
     case "minimizeWindow":
       return (
-        state.minimizedArray.push(payload.toString())
+        [...state.minimizedArray, payload]
       );
     case "maximizeWindow":
       return ([
