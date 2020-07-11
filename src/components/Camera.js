@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect, useRef } from 'react'
 import Draggable from 'react-draggable'
 import { useSpring, animated } from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg'
@@ -114,19 +114,14 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
 }
 
 const ClosedBox = ({ maximize }) => {
-  const minimizedX = 0
 
   const closedBoxStyle = useSpring({
-    config: {
-      //mass: 1000, tension: 0, friction: 1,axddffvnjntrxy
-      // easing : easings.easeExp
-    },
     to: async (next, cancel) => {
       await next({
         position: 'absolute',
         zIndex: '2',
         top: 'calc(96vh - 0px)',
-        left: `calc(${trayIndex * 200}px`, //MINIMIZES TO (calc by index....)
+        left: `calc(${trayIndex * 200}px`,
         backgroundColor: 'white',
         height: '50px',
         width: '200px'
@@ -143,11 +138,29 @@ const ClosedBox = ({ maximize }) => {
     }
   })
 
+  const closedBoxStyleInitial = {
+    position: 'absolute',
+    zIndex: '2',
+    top: 'calc(96vh - 0px)',
+    left: `calc(${trayIndex * 200}px`,
+    backgroundColor: 'white',
+    height: '50px',
+    width: '200px'
+  }
+
+  const [isInitialLoad, setIsInitialLoad ] = useState(true);
+
+  const handleIsLoad = () => {
+    setIsInitialLoad(false);
+  }
+
   return (
-    <animated.div style={closedBoxStyle}>
+    <animated.div 
+    style={(isInitialLoad === true) ? closedBoxStyleInitial : closedBoxStyle}
+    >
       <h2
         onClick={() => {
-          maximize()
+          maximize();
         }}>
         Camera
       </h2>
@@ -171,7 +184,7 @@ export default function Camera({ handleCameraChange }) {
     <ClosedBox
       maximize={() => {
         setIsOpen(!isOpen)
-        {/* actions.generalActions.maximizeWindow('Camera'); */}
+        actions.generalActions.maximizeWindow('Camera');
       }}
     />
   )
