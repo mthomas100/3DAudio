@@ -118,7 +118,7 @@ const OpenBox = ({ handleSoundChange, minimize }) => {
   )
 }
 
-const ClosedBox = ({ maximize, handleOpenWindow }) => {
+const ClosedBox = ({ maximize }) => {
   const minimizedX = 0
 
   const closedBoxStyle = useSpring({
@@ -148,10 +148,6 @@ const ClosedBox = ({ maximize, handleOpenWindow }) => {
     }
   })
 
-  // useEffect(() => {
-  //     handleOpenWindow();
-  //   }, []);
-
   return (
     <animated.div style={closedBoxStyle}>
       <h2
@@ -164,7 +160,7 @@ const ClosedBox = ({ maximize, handleOpenWindow }) => {
   )
 }
 
-export default function Camera({ handleSoundChange, handleCloseWindow, handleOpenWindow }) {
+export default function Camera({ handleSoundChange }) {
   const [isOpen, setIsOpen] = useState(false)
 
   return isOpen === true ? (
@@ -172,7 +168,6 @@ export default function Camera({ handleSoundChange, handleCloseWindow, handleOpe
       handleSoundChange={handleSoundChange}
       minimize={() => {
         setIsOpen(!isOpen);
-        handleCloseWindow('Music');
         {/* onMinimize('Music'); */}
       }}
     />
@@ -180,7 +175,6 @@ export default function Camera({ handleSoundChange, handleCloseWindow, handleOpe
     <ClosedBox
       maximize={() => {
         setIsOpen(!isOpen)
-        handleOpenWindow('Music')
       }}
     />
   )

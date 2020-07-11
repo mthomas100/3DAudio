@@ -1,8 +1,5 @@
-import ReactDOM from 'react-dom'
-import React, { useRef, useState, Fragment, useEffect } from 'react'
+import React, { useState, Fragment, useContext} from 'react'
 import { Canvas, useFrame } from 'react-three-fiber'
-import Box from './Box'
-import Sphere from './Sphere'
 import { Physics, usePlane, useBox } from 'use-cannon'
 import Plane from '../components/Plane'
 import Cube from '../components/Cube'
@@ -11,14 +8,13 @@ import Tone from 'tone'
 import Music from './Music/Music';
 import Camera from './Camera';
 import Shape from './Shape';
-import { useSpring, a }  from "react-spring/three";
+
+// Context
+import { StoreContext } from "../context/store/storeContext";
 
 function App() {
-  /*Hooks*/
+  const { state, actions } = useContext(StoreContext);
 
-  // const props = useSpring({
-  //   scale: active ? [1.5, 1.5, 1.5] : [1, 1, 1]
-  // })
 
   /*Camera State & Handler */
   const [cameraObject, setCameraObject] = useState({
@@ -86,7 +82,7 @@ function App() {
 
   const handleCollide = (mySound) => {
     console.log(mySound);
-    new Tone[mySound.instrument]().toMaster().triggerAttackRelease(mySound.octave + mySound.note , mySound.duration);
+    // new Tone[mySound.instrument]().toMaster().triggerAttackRelease(mySound.octave + mySound.note , mySound.duration);
   }
 
 
@@ -153,28 +149,6 @@ function App() {
   )
 }
 
-
-  const [closedArray, setClosedArray ] = useState(['Music', 'Shape']);
-
-  const handleCloseWindow = (name) => {
-    setClosedArray(prevValue => 
-      prevValue.filter((e, i) => {
-        return e !== name
-      }));
-  }
-
-  const handleOpenWindow = (name) => {
-    setClosedArray(prevValue => 
-      [...prevValue, name]
-    )
-  }
-
-  const closedIndex = (indexName) => {
-    return closedArray.findIndex(e => {
-      return e === indexName
-    })
-  }
-
   const [minimizedArray, setMinimizedArray] = useState([]);
 
   // const handleMinimize = componentName => {
@@ -187,27 +161,19 @@ function App() {
     <Fragment>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "0"}}
-      onClick={() => console.log(closedArray)}>
+      onClick={() => console.log(state.generalStates)}>
       CLOSEDARRAY</button>
       <button 
       style={{position : 'absolute', zIndex: "3", top: "0", right: "200px"}}
-      onClick={() => console.log(closedIndex('Music'))}>
+      onClick={() => console.log('placeholder')}>
       SHAPE INDEX</button>
           <Music 
           handleSoundChange={handleSoundChange}
-          handleCloseWindow={handleCloseWindow}
-          handleOpenWindow={handleOpenWindow}
           />
           <Camera 
           handleCameraChange={(e, n) => handleCameraChange(e, n)}
-          handleCloseWindow={handleCloseWindow}
-          handleOpenWindow={handleOpenWindow}
-          closedIndex={() => closedIndex()}
           />
           <Shape
-          handleCloseWindow={handleCloseWindow}
-          handleOpenWindow={handleOpenWindow}
-          closedIndex={() => closedIndex()}
           />
 
       <div className="bottomBar"></div>
@@ -220,7 +186,7 @@ function App() {
           <Plane />
           <Cube 
           position={[0, 170, 0]}
-          onCollide={() => handleCollide(sound)}
+          //onCollide={() => handleCollide(sound)}
           />
         </Physics>
         <CameraDolly />
