@@ -113,7 +113,7 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
   )
 }
 
-const ClosedBox = ({ maximize }) => {
+const ClosedBoxFinal = ({ maximize }) => {
 
   const closedBoxStyle = useSpring({
     to: async (next, cancel) => {
@@ -138,25 +138,9 @@ const ClosedBox = ({ maximize }) => {
     }
   })
 
-  const closedBoxStyleInitial = {
-    position: 'absolute',
-    zIndex: '2',
-    top: 'calc(96vh - 0px)',
-    left: `calc(${trayIndex * 200}px`,
-    backgroundColor: 'white',
-    height: '50px',
-    width: '200px'
-  }
-
-  const [isInitialLoad, setIsInitialLoad ] = useState(true);
-
-  const handleIsLoad = () => {
-    setIsInitialLoad(false);
-  }
-
   return (
     <animated.div 
-    style={(isInitialLoad === true) ? closedBoxStyleInitial : closedBoxStyle}
+    style={closedBoxStyle}
     >
       <h2
         onClick={() => {
@@ -166,6 +150,37 @@ const ClosedBox = ({ maximize }) => {
       </h2>
     </animated.div>
   )
+}
+
+const ClosedBoxInitial = ({ maximize }) => {
+  const closedBoxStyle = {
+    position: 'absolute',
+    zIndex: '2',
+    top: 'calc(96vh - 0px)',
+    left: `calc(${trayIndex * 200}px`,
+    backgroundColor: 'white',
+    height: '50px',
+    width: '200px'
+  }
+
+  return (
+    <animated.div style={closedBoxStyle}>
+      <h2
+        onClick={() => {
+          maximize()
+        }}>
+        Camera
+      </h2>
+    </animated.div>
+  )
+}
+
+let loadInstance = 0;
+
+const ClosedBox = ({ maximize }) => {
+  loadInstance++;
+
+  return (loadInstance <= 1) ? <ClosedBoxInitial maximize={maximize} /> : <ClosedBoxFinal maximize={maximize}/>
 }
 
 export default function Camera({ handleCameraChange }) {
