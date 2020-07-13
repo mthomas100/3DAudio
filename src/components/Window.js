@@ -7,9 +7,8 @@ import { Handle } from './Music/Slider/components'
 //Context
 import { StoreContext } from "../context/store/storeContext";
 
-//Camera Controls
-//Window minimize/maximize system which puts minimized window at a task tray
-//Task tray location (trayIndex) management
+//Components
+import Camera from './WindowComponents/Camera'
 
 const handleStyle = {
   position: 'relative',
@@ -24,8 +23,9 @@ let dragStart = []
 let dragEnd = []
 let dragDifference = [0, 0]
 
-//below to be replaced by state or some prop passing in or somethign to maintain taskbar order
-const trayIndex = 1
+
+const trayIndex = 3 // will be replaced from context index
+                    // findIndex based on the provided prop name for component
 
 const dragEndHandler = () => {
   dragStart = dragArray[0]
@@ -33,14 +33,11 @@ const dragEndHandler = () => {
   dragDifference = [dragEnd[0] - dragStart[0], dragEnd[1] - dragStart[1]]
 }
 
-const OpenBox = ({ handleCameraChange, minimize }) => {
+//any MAIN PROPS to be passed to component go here
+const OpenBox = ({ minimize, componentName, stateHandler }) => {
   // const [isToggled, setIsToggled ] = useState(true);
 
   const openBoxStyle = useSpring({
-    config: {
-      //mass: 1000, tension: 0, friction: 1,axddffvnjntrxy
-      // easing : easings.easeExp
-    },
     to: async (next, cancel) => {
       await next({
         position: 'absolute',
@@ -56,7 +53,7 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
       position: 'absolute',
       zIndex: '2',
       top: '96vh',
-      left: `calc(${trayIndex * 200}px`, //should be unique to this component
+      left: `calc(${trayIndex * 200}px`,
       backgroundColor: 'white',
       height: '50px',
       width: '200px'
@@ -68,52 +65,23 @@ const OpenBox = ({ handleCameraChange, minimize }) => {
       handle="myHandle"
       onDrag={(e) => dragArray.push([e.clientX, e.clientY])}
       onStop={() => dragEndHandler()}
-      // ref={ref1}>
     >
       <animated.div style={openBoxStyle}>
         <myHandle>
           <HandleIcon style={handleStyle} />
         </myHandle>
-        <h1>Camera Configuration</h1>
-        <form>
-          <button name="camX" onClick={(e) => handleCameraChange(e, -1)}>
-            {' '}
-            Decrement camX
-          </button>
-          <button name="camX" onClick={(e) => handleCameraChange(e, 1)}>
-            {' '}
-            Increment camX
-          </button>
-          <button name="camY" onClick={(e) => handleCameraChange(e, -1)}>
-            {' '}
-            Decrement camY
-          </button>
-          <button name="camY" onClick={(e) => handleCameraChange(e, 1)}>
-            {' '}
-            Increment camY
-          </button>
-          <button name="camZ" onClick={(e) => handleCameraChange(e, -1)}>
-            {' '}
-            Decrement camZ
-          </button>
-          <button name="camZ" onClick={(e) => handleCameraChange(e, 1)}>
-            {' '}
-            Increment camZ
-          </button>
-          {/* <button onClick={consoleLog}> Console Log</button> */}
-        </form>
-        <button onClick={minimize}>Minimize</button>
-        <button onClick={() => console.log(dragArray)}>Drag Array</button>
-        <button onClick={() => console.log(dragEnd)}>Last Index</button>
-        <button onClick={() => console.log(dragStart)}>First Index</button>
-        <button onClick={() => console.log(dragDifference)}>Drag Difference</button>
-        {/* <button onClick={() => setIsToggled(!isToggled)}>Toggle Spring</button> */}
+        {/* <h1>{componentName}</h1> */}
+        <Camera 
+        stateHandler={stateHandler}
+        /> {/*Implement logic to make this generalized */}
+        <button onClick={minimize}>Minimize</button> {/*temporary minimize button*/}
       </animated.div>
+
     </Draggable>
   )
 }
 
-const ClosedBoxFinal = ({ maximize }) => {
+const ClosedBoxFinal = ({ maximize, componentName }) => {
 
   const closedBoxStyle = useSpring({
     to: async (next, cancel) => {
@@ -146,18 +114,18 @@ const ClosedBoxFinal = ({ maximize }) => {
         onClick={() => {
           maximize();
         }}>
-        Camera
+        {componentName}
       </h2>
     </animated.div>
   )
 }
 
-const ClosedBoxInitial = ({ maximize }) => {
+const ClosedBoxInitial = ({ maximize, componentName }) => {
   const closedBoxStyle = {
     position: 'absolute',
     zIndex: '2',
     top: 'calc(96vh - 0px)',
-    left: `calc(${trayIndex * 200}px`,
+    left: `calc(${trayIndex * 200}px`, //should be unique to this component
     backgroundColor: 'white',
     height: '50px',
     width: '200px'
@@ -169,7 +137,7 @@ const ClosedBoxInitial = ({ maximize }) => {
         onClick={() => {
           maximize()
         }}>
-        Camera
+        {componentName}
       </h2>
     </animated.div>
   )
@@ -177,29 +145,37 @@ const ClosedBoxInitial = ({ maximize }) => {
 
 let loadInstance = 0;
 
-const ClosedBox = ({ maximize }) => {
+const ClosedBox = ({ maximize, componentName }) => {
   loadInstance++;
 
-  return (loadInstance <= 1) ? <ClosedBoxInitial maximize={maximize} /> : <ClosedBoxFinal maximize={maximize}/>
+  return (loadInstance <= 1) ? 
+  <ClosedBoxInitial 
+  maximize={maximize}
+  componentName={componentName} /> : 
+  <ClosedBoxFinal 
+  maximize={maximize}
+  componentName={componentName}/>
 }
 
-export default function Camera({ handleCameraChange }) {
+export default function Window( { componentName, componentCode, stateHandler } ) { 
   const { state, actions } = useContext(StoreContext);
   const [isOpen, setIsOpen] = useState(false)
 
   return isOpen === true ? (
     <OpenBox
-      handleCameraChange={handleCameraChange}
+      componentName={componentName}
+      stateHandler = {stateHandler}
       minimize={() => {
-        setIsOpen(!isOpen)
-        actions.generalActions.minimizeWindow('Camera');
+        setIsOpen(!isOpen) //local
+        actions.generalActions.minimizeWindow('Camera'); //CONTEXT ACTION (COMPONENT NAME)
       }}
     />
   ) : (
     <ClosedBox
+      componentName={componentName}
       maximize={() => {
-        setIsOpen(!isOpen)
-        actions.generalActions.maximizeWindow('Camera');
+        setIsOpen(!isOpen) //local
+        actions.generalActions.maximizeWindow('Camera'); //CONTEXT ACTION (COMPONENT NAME)
       }}
     />
   )

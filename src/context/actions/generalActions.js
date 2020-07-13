@@ -12,5 +12,6 @@ export const generalActions = (props) => {
         payload: windowName 
       })
     }
+    
   }
 }
