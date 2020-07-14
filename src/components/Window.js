@@ -9,6 +9,7 @@ import { StoreContext } from "../context/store/storeContext";
 
 // Components
 import Camera from './WindowComponents/Camera';
+import Music from './WindowComponents/Music';
 
 // //Alternative to Components (single config file with linking there)
 // import Camera from './WindowComponents/windowConfig';
@@ -63,6 +64,11 @@ const OpenBox = ({ minimize, componentName, stateHandler }) => {
     }
   })
 
+  const componentObject = {
+    Camera : <Camera stateHandler={stateHandler} />, 
+    Music : <Music stateHandler={stateHandler} />
+  }
+
   return (
     <Draggable
       handle="myHandle"
@@ -73,8 +79,8 @@ const OpenBox = ({ minimize, componentName, stateHandler }) => {
         <myHandle>
           <HandleIcon style={handleStyle} />
         </myHandle>
-        {/* <h1>{componentName}</h1> */}
-        <Camera />
+
+        {componentObject[componentName]}
         <button onClick={minimize}>Minimize</button> {/*temporary minimize button*/}
       </animated.div>
 

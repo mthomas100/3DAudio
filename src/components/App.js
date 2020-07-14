@@ -36,7 +36,7 @@ function App() {
 
   const handleCollide = (mySound) => {
     console.log(mySound)
-    new Tone['AMSynth']().toMaster().triggerAttackRelease('4G', '4n');
+    // new Tone['AMSynth']().toMaster().triggerAttackRelease('4G', '4n');
   }
 
   // new Tone[tone.instrument]().toMaster().triggerAttackRelease(tone.octave + tone.note , tone.duration);
@@ -148,13 +148,19 @@ function App() {
       <button style={{ position: 'absolute', zIndex: '3', top: '0', right: '200px' }} onClick={() => console.log('placeholder')}>
         SHAPE INDEX
       </button>
+      <Shape />
       <Music handleSoundChange={handleSoundChange} />
       <Camera handleCameraChange={(e, n) => handleCameraChange(e, n)} />
-      <Shape />
       <Window
       componentName='Camera'
       stateHandler={(e, n) => handleCameraChange(e, n)}
       />
+      {/* <Window 
+      componentName='Music'
+      stateHandler={(e, n) => handleSoundChange}
+      /> */}
+      
+
   
 
       <div className="bottomBar"></div>
