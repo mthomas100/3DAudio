@@ -36,6 +36,7 @@ function App() {
 
   const handleCollide = (mySound) => {
     console.log(mySound)
+    new Tone['AMSynth']().toMaster().triggerAttackRelease('4G', '4n');
   }
 
   // new Tone[tone.instrument]().toMaster().triggerAttackRelease(tone.octave + tone.note , tone.duration);

@@ -7,8 +7,11 @@ import { Handle } from './Music/Slider/components'
 //Context
 import { StoreContext } from "../context/store/storeContext";
 
-//Components
-import Camera from './WindowComponents/Camera'
+// Components
+import Camera from './WindowComponents/Camera';
+
+// //Alternative to Components (single config file with linking there)
+// import Camera from './WindowComponents/windowConfig';
 
 const handleStyle = {
   position: 'relative',
@@ -19,7 +22,7 @@ const handleStyle = {
 }
 
 const dragArray = [] // x , y
-let dragStart = []
+let dragStart = []    
 let dragEnd = []
 let dragDifference = [0, 0]
 
@@ -71,9 +74,7 @@ const OpenBox = ({ minimize, componentName, stateHandler }) => {
           <HandleIcon style={handleStyle} />
         </myHandle>
         {/* <h1>{componentName}</h1> */}
-        <Camera 
-        stateHandler={stateHandler}
-        /> {/*Implement logic to make this generalized */}
+        <Camera />
         <button onClick={minimize}>Minimize</button> {/*temporary minimize button*/}
       </animated.div>
 
