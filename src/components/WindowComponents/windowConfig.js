@@ -7,3 +7,5 @@ export {
     Shape, 
     Music 
 }
+
+//consider using this to do the whole component object definition thing here

@@ -28,8 +28,7 @@ let dragEnd = []
 let dragDifference = [0, 0]
 
 
-const trayIndex = 3 // will be replaced from context index
-                    // findIndex based on the provided prop name for component
+
 
 const dragEndHandler = () => {
   dragStart = dragArray[0]
@@ -38,7 +37,7 @@ const dragEndHandler = () => {
 }
 
 //any MAIN PROPS to be passed to component go here
-const OpenBox = ({ minimize, componentName, stateHandler }) => {
+const OpenBox = ({ minimize, componentName, stateHandler, trayIndex }) => {
   // const [isToggled, setIsToggled ] = useState(true);
 
   const openBoxStyle = useSpring({
@@ -71,14 +70,14 @@ const OpenBox = ({ minimize, componentName, stateHandler }) => {
 
   return (
     <Draggable
-      handle="myHandle"
+      handle="myHandle1"
       onDrag={(e) => dragArray.push([e.clientX, e.clientY])}
-      onStop={() => dragEndHandler()}
+      onStop={() => dragEndHandler()}   
     >
       <animated.div style={openBoxStyle}>
-        <myHandle>
+        <myHandle1>
           <HandleIcon style={handleStyle} />
-        </myHandle>
+        </myHandle1>
 
         {componentObject[componentName]}
         <button onClick={minimize}>Minimize</button> {/*temporary minimize button*/}
@@ -88,7 +87,7 @@ const OpenBox = ({ minimize, componentName, stateHandler }) => {
   )
 }
 
-const ClosedBoxFinal = ({ maximize, componentName }) => {
+const ClosedBoxFinal = ({ maximize, componentName, trayIndex }) => {
 
   const closedBoxStyle = useSpring({
     to: async (next, cancel) => {
@@ -127,7 +126,9 @@ const ClosedBoxFinal = ({ maximize, componentName }) => {
   )
 }
 
-const ClosedBoxInitial = ({ maximize, componentName }) => {
+const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
+  console.log('ClosedBoxInitial ' + componentName + ' ran');
+
   const closedBoxStyle = {
     position: 'absolute',
     zIndex: '2',
@@ -150,39 +151,50 @@ const ClosedBoxInitial = ({ maximize, componentName }) => {
   )
 }
 
-let loadInstance = 0;
+  let loadInstance = {
+    Camera : 0,
+    Music : 0
+  }
 
-const ClosedBox = ({ maximize, componentName }) => {
-  loadInstance++;
+const ClosedBox = ({ maximize, componentName, trayIndex }) => {
+  loadInstance[componentName]++;
+  console.log(loadInstance[componentName] + ' for ' + componentName);
 
-  return (loadInstance <= 1) ? 
+  return (loadInstance[componentName] <= 1) ? //equivalent to total number of componenets
   <ClosedBoxInitial 
   maximize={maximize}
-  componentName={componentName} /> : 
+  componentName={componentName}
+  trayIndex={trayIndex} /> : 
   <ClosedBoxFinal 
   maximize={maximize}
-  componentName={componentName}/>
+  componentName={componentName}
+  trayIndex={trayIndex} />
 }
 
-export default function Window( { componentName, componentCode, stateHandler } ) { 
+export default function Window( { componentName, componentCode, stateHandler, trayIndex} ) { 
   const { state, actions } = useContext(StoreContext);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState({
+    Camera : false,
+    Music : false
+  })
 
-  return isOpen === true ? (
+  return isOpen[componentName] === true ? (
     <OpenBox
       componentName={componentName}
       stateHandler = {stateHandler}
+      trayIndex={trayIndex}
       minimize={() => {
-        setIsOpen(!isOpen) //local
-        actions.generalActions.minimizeWindow('Camera'); //CONTEXT ACTION (COMPONENT NAME)
+        setIsOpen({...isOpen, [componentName] : false}) //local
+        actions.generalActions.minimizeWindow(componentName); //CONTEXT ACTION (COMPONENT NAME)
       }}
     />
   ) : (
     <ClosedBox
       componentName={componentName}
+      trayIndex={trayIndex}
       maximize={() => {
-        setIsOpen(!isOpen) //local
-        actions.generalActions.maximizeWindow('Camera'); //CONTEXT ACTION (COMPONENT NAME)
+        setIsOpen({...isOpen, [componentName] : true}) //local
+        actions.generalActions.maximizeWindow(componentName); //CONTEXT ACTION (COMPONENT NAME)
       }}
     />
   )

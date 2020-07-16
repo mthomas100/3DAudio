@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function Camera({ stateHandler }) {
-    console.log('camera window component triggered');
     return (
         <div>
         <h1>Camera Configuration</h1>

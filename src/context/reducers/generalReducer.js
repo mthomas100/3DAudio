@@ -1,6 +1,6 @@
 
 export const generalStates = {
-  minimizedArray : ['Shape', 'Camera', 'Music']
+  minimizedArray : []
 }
 
 

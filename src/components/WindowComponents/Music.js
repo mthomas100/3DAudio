@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import MusicButton from '../Music/MusicButton';
 import MySlider from '../Music/Slider/SliderComponents';
 import SourceList from '../Music/SourceList';
@@ -38,9 +38,8 @@ export default function Music({ stateHandler }) {
   }
 
   return (
-    <div>
+    <Fragment>
       <h1>Note Configuration</h1>
-      <p>*must select all 4 options*</p>
       <MySlider note={(e) => getNoteValue(e, 'note')} domainMin={0} domainMax={6} tickArray={noteArray} />
       <MySlider note={(e) => getNoteValue(e, 'octave')} domainMin={0} domainMax={7} tickArray={octaveArray} />
       <MySlider note={(e) => getNoteValue(e, 'duration')} domainMin={0} domainMax={5} tickArray={durationArray} />
@@ -49,6 +48,6 @@ export default function Music({ stateHandler }) {
       <SourceList getInstrument={getInstrument} />
 
       <MusicButton note={note} octave={octave} duration={duration} instrument={instrument} />
-    </div>
+    </Fragment>
   )
 }

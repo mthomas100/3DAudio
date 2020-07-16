@@ -2,13 +2,23 @@ import React, { useState, Fragment, useContext } from 'react'
 import { Canvas, useFrame } from 'react-three-fiber'
 import { Physics, usePlane, useBox } from 'use-cannon'
 import Plane from '../components/Plane'
-import Cube from '../components/Cube'
+import Cube from './Cube'
 import '../styles.css'
 import Tone from 'tone'
-import Music from './Music/Music'
-import Camera from './Camera'
-import Shape from './Shape'
 import Window from './Window'
+
+//TODO: Strip out components
+//Window Management Index useReducer/useContext
+//Fix CSS on the new sound/ window component 
+//Do all state updates through useReducer/useContext
+//Then move the thing with the stateHandler needed import up to the top for readability <!-- make notes on what needs to be changed, where needed
+//Improve Camera Functionality (d3/use-Spring/for-each) + trig / orbital component functions
+//Make sound work with cube collisions (brainstorm other cool sound/visual ideas)
+//Import museum or similar from 3d model site
+//Implement "walking" functionality (using keyboard inputs to navigate) // possibly a side project [at this pont decide whether to start new project or whether to keep windows...]
+//Make the window functionality cleaner and really refine the UI to be like photoshop or something
+//Spin off and make a DAW using my new window interface 
+//Clean up control panels, refine UI, standardize
 
 // Context
 import { StoreContext } from '../context/store/storeContext'
@@ -148,17 +158,16 @@ function App() {
       <button style={{ position: 'absolute', zIndex: '3', top: '0', right: '200px' }} onClick={() => console.log('placeholder')}>
         SHAPE INDEX
       </button>
-      <Shape />
-      <Music handleSoundChange={handleSoundChange} />
-      <Camera handleCameraChange={(e, n) => handleCameraChange(e, n)} />
       <Window
       componentName='Camera'
       stateHandler={(e, n) => handleCameraChange(e, n)}
+      trayIndex={0}
       />
-      {/* <Window 
+      <Window 
       componentName='Music'
-      stateHandler={(e, n) => handleSoundChange}
-      /> */}
+      stateHandler={(e, n) => handleSoundChange(e, n)} // GET RID OF E,N AT END?
+      trayIndex={1}
+      />
       
 
   
