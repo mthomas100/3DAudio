@@ -151,14 +151,19 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
   )
 }
 
-  let loadInstance = {
+const ClosedBox = ({ maximize, componentName, trayIndex }) => {
+
+  const [loadInstance , setLoadInstance ] = useState({
     Camera : 0,
     Music : 0
-  }
+  })
 
-const ClosedBox = ({ maximize, componentName, trayIndex }) => {
-  loadInstance[componentName]++;
-  console.log(loadInstance[componentName] + ' for ' + componentName);
+  //useEffect
+  useEffect(() => {
+    setLoadInstance(prevValue => ({...loadInstance, [componentName] : prevValue[componentName] + 1 }));
+  }, []);
+
+  console.log('loadInstance is ' + loadInstance[componentName] + ' for ' + componentName);
 
   return (loadInstance[componentName] <= 1) ? //equivalent to total number of componenets
   <ClosedBoxInitial 
