@@ -127,7 +127,7 @@ const ClosedBoxFinal = ({ maximize, componentName, trayIndex }) => {
 }
 
 const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
-  console.log('ClosedBoxInitial ' + componentName + ' ran');
+  // console.log('ClosedBoxInitial ' + componentName + ' ran');
 
   const closedBoxStyle = {
     position: 'absolute',
@@ -151,21 +151,22 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
   )
 }
 
+let loadInitial = {
+  Camera : true,
+  Music : true,
+}
+
 const ClosedBox = ({ maximize, componentName, trayIndex }) => {
 
-  const [loadInstance , setLoadInstance ] = useState({
-    Camera : 0,
-    Music : 0
-  })
+  
 
-  //useEffect
+  console.log('loadInstance is ' + loadInitial[componentName] + ' for ' + componentName);
+
   useEffect(() => {
-    setLoadInstance(prevValue => ({...loadInstance, [componentName] : prevValue[componentName] + 1 }));
-  }, []);
+    loadInitial[componentName] = false;
+  }, [])
 
-  console.log('loadInstance is ' + loadInstance[componentName] + ' for ' + componentName);
-
-  return (loadInstance[componentName] <= 1) ? //equivalent to total number of componenets
+  return (loadInitial[componentName] === true) ? //equivalent to total number of componenets
   <ClosedBoxInitial 
   maximize={maximize}
   componentName={componentName}
