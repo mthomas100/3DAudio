@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import React, { useState, useContext, useEffect, useRef, useMemo } from 'react'
 import Draggable from 'react-draggable'
 import { useSpring, animated } from 'react-spring'
 import { ReactComponent as HandleIcon } from '../images/grip-vertical-solid.svg'
@@ -56,7 +56,7 @@ const OpenBox = ({ minimize, componentName, stateHandler, trayIndex }) => {
       position: 'absolute',
       zIndex: '2',
       top: '96vh',
-      left: `calc(${trayIndex * 200}px`,
+      left: `calc(${trayIndex * 210}px`,
       backgroundColor: 'white',
       height: '50px',
       width: '200px'
@@ -95,7 +95,7 @@ const ClosedBoxFinal = ({ maximize, componentName, trayIndex }) => {
         position: 'absolute',
         zIndex: '2',
         top: 'calc(96vh - 0px)',
-        left: `calc(${trayIndex * 200}px`, //should be unique to this component
+        left: `calc(${trayIndex * 210}px`, //should be unique to this component
         backgroundColor: 'white',
         height: '50px',
         width: '200px'
@@ -133,7 +133,7 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
     position: 'absolute',
     zIndex: '2',
     top: 'calc(96vh - 0px)',
-    left: `calc(${trayIndex * 200}px`, //should be unique to this component
+    left: `calc(${trayIndex * 210}px`, //should be unique to this component
     backgroundColor: 'white',
     height: '50px',
     width: '200px'
@@ -151,22 +151,15 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
   )
 }
 
-let loadInitial = {
-  Camera : true,
-  Music : true,
-}
+const ClosedBox = ({ maximize, componentName, trayIndex, isInitialLoad, setIsInitialLoad  }) => {
 
-const ClosedBox = ({ maximize, componentName, trayIndex }) => {
-
-  
-
-  console.log('loadInstance is ' + loadInitial[componentName] + ' for ' + componentName);
+  console.log('isInitialLoad is ' + isInitialLoad[componentName] + ' for ' + componentName);
 
   useEffect(() => {
-    loadInitial[componentName] = false;
+    setIsInitialLoad({...isInitialLoad, [componentName] : false});
   }, [])
 
-  return (loadInitial[componentName] === true) ? //equivalent to total number of componenets
+  return (isInitialLoad[componentName] === true) ? //equivalent to total number of componenets
   <ClosedBoxInitial 
   maximize={maximize}
   componentName={componentName}
@@ -177,12 +170,16 @@ const ClosedBox = ({ maximize, componentName, trayIndex }) => {
   trayIndex={trayIndex} />
 }
 
-export default function Window( { componentName, componentCode, stateHandler, trayIndex} ) { 
+const Window = ( { componentName, componentCode, stateHandler, trayIndex} ) => { 
   const { state, actions } = useContext(StoreContext);
   const [isOpen, setIsOpen] = useState({
     Camera : false,
     Music : false
   })
+  const [isInitialLoad, setIsInitialLoad] = useState({
+    Camera : false,
+    Music : false
+  });
 
   return isOpen[componentName] === true ? (
     <OpenBox
@@ -202,6 +199,10 @@ export default function Window( { componentName, componentCode, stateHandler, tr
         setIsOpen({...isOpen, [componentName] : true}) //local
         actions.generalActions.maximizeWindow(componentName); //CONTEXT ACTION (COMPONENT NAME)
       }}
+      setIsInitialLoad={setIsInitialLoad}
+      isInitialLoad={isInitialLoad}
     />
   )
 }
+
+export default Window;
