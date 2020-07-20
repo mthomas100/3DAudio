@@ -11,8 +11,26 @@ import { StoreContext } from "../context/store/storeContext";
 import Camera from './WindowComponents/Camera';
 import Music from './WindowComponents/Music';
 
-// //Alternative to Components (single config file with linking there)
-// import Camera from './WindowComponents/windowConfig';
+//README
+//For new components, 3 things must be updated:
+//1) Components imports
+//2) componentObject
+//3) both of the state arrays in the bottom window component with matching names 
+// Future update - possible to make this all a window config import? 
+
+
+// ( COMPLETE )TODO: Strip out components 
+//Window Management Index useReducer/useContext
+//Fix CSS on the new sound/ window component 
+//Do all state updates through useReducer/useContext
+//Then move the thing with the stateHandler needed import up to the top for readability <!-- make notes on what needs to be changed, where needed
+//Improve Camera Functionality (d3/use-Spring/for-each) + trig / orbital component functions
+//Make sound work with cube collisions (brainstorm other cool sound/visual ideas)
+//Import museum or similar from 3d model site
+//Implement "walking" functionality (using keyboard inputs to navigate) // possibly a side project [at this pont decide whether to start new project or whether to keep windows...]
+//Make the window functionality cleaner and really refine the UI to be like photoshop or something
+//Spin off and make a DAW using my new window interface 
+//Clean up control panels, refine UI, standardize
 
 const handleStyle = {
   position: 'relative',
@@ -151,11 +169,14 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
   )
 }
 
-const ClosedBox = ({ maximize, componentName, trayIndex, loadCount, setLoadCount  }) => {
+const ClosedBox = ({ maximize, componentName, trayIndex, loadCount, setLoadCount, actions  }) => {
 
-  console.log('loadCount is ' + loadCount[componentName] + ' for ' + componentName);
+  //console.log('loadCount is ' + loadCount[componentName] + ' for ' + componentName);
 
   useEffect(() => {
+    if (loadCount[componentName] === 0) {
+      actions.generalActions.minimizeWindow(componentName)
+    }
     setLoadCount(prevValue => ({...loadCount, [componentName] : prevValue[componentName] + 1}));
   }, [])
 
@@ -201,6 +222,7 @@ const Window = ( { componentName, componentCode, stateHandler, trayIndex} ) => {
       }}
       setLoadCount={setLoadCount}
       loadCount={loadCount}
+      actions={actions}
     />
   )
 }
