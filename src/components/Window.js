@@ -151,15 +151,15 @@ const ClosedBoxInitial = ({ maximize, componentName, trayIndex }) => {
   )
 }
 
-const ClosedBox = ({ maximize, componentName, trayIndex, isInitialLoad, setIsInitialLoad  }) => {
+const ClosedBox = ({ maximize, componentName, trayIndex, loadCount, setLoadCount  }) => {
 
-  console.log('isInitialLoad is ' + isInitialLoad[componentName] + ' for ' + componentName);
+  console.log('loadCount is ' + loadCount[componentName] + ' for ' + componentName);
 
   useEffect(() => {
-    setIsInitialLoad({...isInitialLoad, [componentName] : false});
+    setLoadCount(prevValue => ({...loadCount, [componentName] : prevValue[componentName] + 1}));
   }, [])
 
-  return (isInitialLoad[componentName] === true) ? //equivalent to total number of componenets
+  return (loadCount[componentName] <= 1) ? //equivalent to total number of componenets
   <ClosedBoxInitial 
   maximize={maximize}
   componentName={componentName}
@@ -176,9 +176,9 @@ const Window = ( { componentName, componentCode, stateHandler, trayIndex} ) => {
     Camera : false,
     Music : false
   })
-  const [isInitialLoad, setIsInitialLoad] = useState({
-    Camera : false,
-    Music : false
+  const [loadCount, setLoadCount] = useState({
+    Camera : 0,
+    Music : 0
   });
 
   return isOpen[componentName] === true ? (
@@ -199,8 +199,8 @@ const Window = ( { componentName, componentCode, stateHandler, trayIndex} ) => {
         setIsOpen({...isOpen, [componentName] : true}) //local
         actions.generalActions.maximizeWindow(componentName); //CONTEXT ACTION (COMPONENT NAME)
       }}
-      setIsInitialLoad={setIsInitialLoad}
-      isInitialLoad={isInitialLoad}
+      setLoadCount={setLoadCount}
+      loadCount={loadCount}
     />
   )
 }
