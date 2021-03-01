@@ -18,7 +18,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "three": "0.117.1",
+    "three": "0.125.0",
     "tone": "^13.8.25",
     "use-cannon": "^0.4.9",
     "uuid": "^8.2.0",
